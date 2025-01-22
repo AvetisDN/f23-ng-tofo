@@ -1,1 +1,40 @@
-/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .input {
+    @apply relative p-1 rounded-full bg-zinc-700;
+    input {
+      @apply bg-zinc-900 outline-none p-3 px-5 rounded-full w-full relative z-10;
+    }
+    input + .gr {
+      @apply absolute w-full h-full  bg-gradient-to-tr from-pink-400 via-purple-500 to-indigo-600 rounded-full block top-0 left-0 transition-opacity opacity-0 duration-300;
+      content: "";
+    }
+    input:focus + .gr {
+      @apply opacity-100;
+    }
+    button {
+      @apply p-2 text-3xl leading-none font-black uppercase text-purple-950 absolute z-20 top-2 right-2 w-10 h-10 rounded-full bg-gradient-to-tr from-pink-400 via-purple-500 to-indigo-600 flex items-center justify-center;
+    }
+  }
+
+  .check {
+    @apply flex gap-2 items-center;
+    .check-input {
+      input[type="checkbox"] {
+        @apply hidden;
+      }
+      input + label {
+        @apply block w-6 h-6 rounded-full bg-zinc-400 cursor-pointer border-solid border-4 border-zinc-300 transition-colors;
+      }
+      input:checked + label {
+        @apply bg-green-600;
+      }
+    }
+    label {
+      @apply cursor-pointer select-none;
+    }
+  }
+}

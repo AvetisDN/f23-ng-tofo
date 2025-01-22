@@ -1,0 +1,64 @@
+<div
+  class="flex justify-between p-3 ps-5 bg-zinc-900 rounded-full gap-3 items-center"
+>
+  <div class="check">
+    <div class="check-input">
+      <input
+        type="checkbox"
+        [id]="item.title"
+        [checked]="item.completed"
+        (change)="toggleItemCompletion(item)"
+      />
+      <label [for]="item.title"></label>
+    </div>
+    <div class="flex gap-2 items-center">
+      <input
+        type="text"
+        #editedItem
+        [value]="item.title"
+        class="px-4 py-1 rounded-full border-none outline-none"
+        [readOnly]="!editable"
+        [class]="{ 'bg-zinc-800': editable, 'bg-transparent': !editable }"
+        (keyup.enter)="saveItem(editedItem.value)"
+        (keyup.escape)="toogleEditable()"
+      />
+      @if (editable) {
+
+      <button (click)="saveItem(editedItem.value)">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 448 512"
+          class="fill-current w-4 h-4"
+        >
+          <path
+            d="M64 32C28.7 32 0 60.7 0 96L0 416c0 35.3 28.7 64 64 64l320 0c35.3 0 64-28.7 64-64l0-242.7c0-17-6.7-33.3-18.7-45.3L352 50.7C340 38.7 323.7 32 306.7 32L64 32zm0 96c0-17.7 14.3-32 32-32l192 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32L96 224c-17.7 0-32-14.3-32-32l0-64zM224 288a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"
+          />
+        </svg>
+      </button>
+      <button class="text-2xl" (click)="editable = false">&times;</button>
+      }
+    </div>
+  </div>
+  <div class="flex gap-2">
+    <button
+      class="bg-blue-400 text-blue-950 font-bold w-6 h-6 flex justify-center items-center rounded-full"
+      (click)="toogleEditable()"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 512 512"
+        class="fill-current w-3 h-3"
+      >
+        <path
+          d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"
+        />
+      </svg>
+    </button>
+    <button
+      class="bg-red-400 text-red-950 font-bold w-6 h-6 flex justify-center items-center rounded-full"
+      (click)="remove.emit()"
+    >
+      &times;
+    </button>
+  </div>
+</div>
