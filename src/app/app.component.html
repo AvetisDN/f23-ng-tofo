@@ -7,7 +7,7 @@
     </h1>
     <form
       class="flex flex-col gap-2"
-      (submit)="addTodo($event, newTodo.value); newTodo.value = ''"
+      (submit)="addItem($event, newTodo.value); newTodo.value = ''"
     >
       <label for="addTodo" class="text-center text-zinc-500">
         What would you like to do?
@@ -18,14 +18,30 @@
         <button>+</button>
       </div>
     </form>
-    @if (todos.length) {
+    <div class="my-1 flex items-center gap-4 justify-evenly filters">
+      <button
+        (click)="setFilterValue('all')"
+        [class]="{ active: filter === 'all' }"
+      >
+        All
+      </button>
+      <button
+        (click)="setFilterValue('active')"
+        [class]="{ active: filter === 'active' }"
+      >
+        Active
+      </button>
+      <button
+        (click)="setFilterValue('done')"
+        [class]="{ active: filter === 'done' }"
+      >
+        Done
+      </button>
+    </div>
+    @if (todoItems.length) {
     <div class="flex flex-col gap-2">
-      @for(todo of todos; track todo.title) {
-      <app-item
-        (remove)="removeTodo(todo)"
-        [item]="todo"
-        (save)="saveToLocalStorage()"
-      ></app-item>
+      @for(todo of todoItems; track todo.title) {
+      <app-item (remove)="removeItem(todo)" [item]="todo"></app-item>
       }
     </div>
     } @else {

@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import todos from './data';
+import { Component, inject } from '@angular/core';
 import { ItemComponent } from './item/item.component';
-import { TodoItem } from './interfaces';
+import { Filter, TodoItem } from './interfaces';
+import { TodoService } from './todo.service';
 
 @Component({
   selector: 'app-root',
@@ -13,37 +13,25 @@ import { TodoItem } from './interfaces';
 })
 export class AppComponent {
   title: string = 'NgTodo';
-  filter: 'all' | 'active' | 'done' = 'all';
-  todoItems = JSON.parse(localStorage.getItem('ng-todos') as string) || [];
+  filter: Filter = 'all';
+  todoItems: TodoItem[] = [];
+  todoService: TodoService = inject(TodoService);
 
-  get todos() {
-    if (this.filter === 'all') {
-      return this.todoItems;
-    }
-    return this.todoItems.filter((todo: TodoItem) =>
-      this.filter === 'active' ? !todo.completed : todo.completed
-    );
+  constructor() {
+    this.todoItems = this.todoService.getTodos();
   }
 
-  addTodo(event: Event, title: string) {
+  addItem(event: Event, title: string) {
     event.preventDefault();
-    if (!title) return;
-
-    this.todoItems.unshift({
-      title,
-      completed: false,
-    });
-
-    this.saveToLocalStorage();
+    this.todoService.addTodo(title);
   }
 
-  removeTodo(todo: TodoItem) {
-    this.todoItems.splice(this.todoItems.indexOf(todo), 1);
-
-    this.saveToLocalStorage();
+  removeItem(todo: TodoItem) {
+    this.todoService.removeTodo(todo);
   }
 
-  saveToLocalStorage() {
-    localStorage.setItem('ng-todos', JSON.stringify(this.todoItems));
+  setFilterValue(filter: Filter) {
+    this.filter = filter;
+    this.todoItems = this.todoService.getTodos(filter);
   }
 }

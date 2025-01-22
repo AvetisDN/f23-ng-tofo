@@ -5,8 +5,10 @@ import {
   Output,
   ElementRef,
   ViewChild,
+  inject,
 } from '@angular/core';
 import { TodoItem } from '../interfaces';
+import { TodoService } from '../todo.service';
 
 @Component({
   selector: 'app-item',
@@ -17,22 +19,13 @@ import { TodoItem } from '../interfaces';
 })
 export class ItemComponent {
   editable = false;
+  todoService: TodoService = inject(TodoService);
 
   @Input() item!: TodoItem;
   @Output() remove = new EventEmitter<TodoItem>();
-  @Output() save = new EventEmitter<TodoItem>();
 
   @ViewChild('editedItem')
   editedItemElement!: ElementRef;
-
-  saveItem(title: string) {
-    if (!title) return;
-
-    this.editable = false;
-    this.item.title = title;
-
-    this.save.emit();
-  }
 
   toogleEditable() {
     this.editable = !this.editable;
@@ -43,9 +36,13 @@ export class ItemComponent {
     }
   }
 
-  toggleItemCompletion(item: TodoItem) {
-    item.completed = !item.completed;
+  saveItem(item: TodoItem, title: string) {
+    if (!title) return;
+    this.editable = false;
+    this.todoService.saveTodo(item, title);
+  }
 
-    this.save.emit();
+  toggleItemCompletion(item: TodoItem) {
+    this.todoService.toggleTodoCompletion(item);
   }
 }

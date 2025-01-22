@@ -19,12 +19,12 @@
         class="px-4 py-1 rounded-full border-none outline-none"
         [readOnly]="!editable"
         [class]="{ 'bg-zinc-800': editable, 'bg-transparent': !editable }"
-        (keyup.enter)="saveItem(editedItem.value)"
+        (keyup.enter)="saveItem(item, editedItem.value)"
         (keyup.escape)="toogleEditable()"
       />
       @if (editable) {
 
-      <button (click)="saveItem(editedItem.value)">
+      <button (click)="saveItem(item, editedItem.value)">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 448 512"
